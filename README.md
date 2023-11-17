@@ -27,6 +27,9 @@ view/tamplate.xml
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="o">
                     <t t-call="web.external_layout">
+                        |||||||||||||||||||||||||||||||||||||||||
+                            Page para agregar una pagina
+                        |||||||||||||||||||||||||||||||||||||||||
                         <div class="page">
                             <h2>Visita</h2>
                             <p>Cliente:
