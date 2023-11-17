@@ -3,52 +3,58 @@
 from odoo import models, fields, api
 import datetime
 
-
 class Visit(models.Model):
+    # Estandar: Nombre del modelo y el nombre de la clase
     _name = 'custom_crm.visit'
-    _description = 'Visit'
+    _description = 'visit'
 
-    name = fields.Char(string='Descripción')
-    customer = fields.Many2one(string='Cliente', comodel_name='res.partner')
-    date = fields.Datetime(string='Fecha')
-    type = fields.Selection([('P', 'Presencial'), ('W', 'WhatsApp'), ('T', 'Telefónico')], string='Tipo', required=True)
-    done = fields.Boolean(string='Realizada', readonly=True)
-    image = fields.Binary(string='Imagen')
+    # Campos
+    name = fields.Char(string="Description")
+    customer = fields.Many2one(string="Customer", comodel_name="res.partner")
+    # DateTime: Almacenado la fecha y la hora
+    date = fields.Datetime(string="Date")
+    type = fields.Selection([('P', 'Presencial'), ('V', 'Virtual')], string="Type", required=True)
+    done = fields.Boolean(string="Done", readonly=True)
+    image = fields.Binary(string="Image")
 
     def toggle_state(self):
         self.done = not self.done
 
-    #ORM
     def f_create(self):
         visit = {
-            'name': 'ORM test',
+            'name': 'Visita 1',
             'customer': 1,
-            'date': str(datetime.date(2020, 8, 6)),
+            'date': '2020-06-01 10:00:00',
             'type': 'P',
-            'done': False
+            'done': False,
         }
         print(visit)
+        # Nombre del modeo y el metodo create para guardar el registro en la base de datos
         self.env['custom_crm.visit'].create(visit)
 
     def f_search_update(self):
-        visit = self.env['custom_crm.visit'].search([('name', '=', 'ORM test')])
-        print('search()', visit, visit.name)
+        # Buscar el registro en la base de datos
+        visit = self.env['custom_crm.visit'].search([('name', '=', 'dawdadawd')])
+        print("Visita encontrada: ", visit, visit.name)
 
-        visit_b = self.env['custom_crm.visit'].browse([8])
-        print('browse()', visit_b, visit_b.name)
+        # Actualizar el registro
+        visit_v = self.env['custom_crm.visit'].browse([2])
+        print("Visita encontrada - one: ", visit_v, visit_v.name)
 
-        visit.write({
-            'name': 'ORM test write'
-        })
+        # Actualizar el registro
+        visit_v.write({'name': 'Grupo SCANNER'})
 
-    def f_delete(self):
-        visit = self.env['custom_crm.visit'].browse([8])
+    def f_search_delete(self):
+        # Buscar el registro en la base de datos
+        visit = self.env['custom_crm.visit'].browse([2])
+        print("Visita encontrada: ", visit, visit.name)
+
+        # Eliminar el registro
         visit.unlink()
 
 
 class VisitReport(models.AbstractModel):
-
-    _name='report.custom_crm.report_visit_card'
+    _name = 'report.custom_crm.report_visit_card'
 
     @api.model
     def _get_report_values(self, docids, data=None):
@@ -60,9 +66,7 @@ class VisitReport(models.AbstractModel):
             'docs': self.env['custom_crm.visit'].browse(docids)
         }
 
-
 class CustomSaleOrder(models.Model):
-
+    #Modelo a cual se va a amplicar la funcionalidad
     _inherit = 'sale.order'
-
-    zone = fields.Selection([('N', 'Norte'), ('C', 'Centro'), ('S', 'Sur')], string='Zona comercial')
+    zone = fields.Selection([('N', 'Norte'), ('S', 'Sur'), ('E', 'Este'), ('O', 'Oeste')], string="Zone", required=True)
