@@ -1,16 +1,25 @@
 <odoo>
     <data>
-        <record id="view_custom_crm_visit_form" model="ir.ui.view">
-            <field name="name">view.custom.crm.visit.form</field>
+        <!-- explicit list view definition -->
+        <record model="ir.ui.view" id="view_custom_crm_visit_from">
+            <field name="name">view.custom.crn.visit.from</field>
             <field name="model">custom_crm.visit</field>
             <field name="arch" type="xml">
+                <!-- Formulario -->
                 <form string="Visita">
+                    <!-- Sheet es un contenedor de grupos -->
                     <sheet>
                         <div class="oe_button_box" name="button_box">
-                            <button name="toggle_state" type="object" class="oe_stat_button"
-                                    string="Cambiar realizada" icon="fa-play-circle"
+
+                            <button
+                                    class="oe_stat_button"
+                                    name="toggle_state"
+                                    type="object"
+                                    icon="fa-external-link"
+                                    string="Marcar como hecha"
                             />
                         </div>
+
                         <group name="group_top">
                             <group name="group_left">
                                 <field name="customer"/>
@@ -20,7 +29,8 @@
                             <group name="group_right">
                                 <field name="name"/>
                                 <field name="done"/>
-                                <field name="image" widget="image"/>
+
+                                <field name="image" widget="image" class="oe_left oe_avatar"/>
                             </group>
                         </group>
                     </sheet>
@@ -28,22 +38,26 @@
             </field>
         </record>
 
+        <!--  Vista tree -->
         <record id="view_custom_crm_visit_tree" model="ir.ui.view">
-            <field name="name">view.custom.crm.visit.tree</field>
+            <field name="name">view.custom_crm_visit_tree</field>
             <field name="model">custom_crm.visit</field>
             <field name="arch" type="xml">
+                <!-- Columnas que quiero que me muestre -->
                 <tree string="Visit">
-                    <field name="customer"/>
                     <field name="name"/>
-                    <field name="type"/>
+                    <field name="customer"/>
                     <field name="date"/>
-                    <button name="f_create" string="Crear" class="oe_highlight" type="object"/>
-                    <button name="f_search_update" string="Buscar/Editar" class="oe_highlight" type="object"/>
-                    <button name="f_delete" string="Eliminar" class="oe_highlight" type="object"/>
+                    <field name="type"/>
+                    <field name="done"/>
+                    <button name="f_create" string="Crear" type="object" class="oe_highlight"/>
+                    <button name="f_search_update"  string="Buscar y actualizar" type="object" class="oe_highlight"/>
+                    <button name="f_search_delete"  string="Buscar y borrar" type="object" class="oe_highlight"/>
                 </tree>
             </field>
         </record>
 
+        <!-- Vista formulario -->
         <record id="view_custom_crm_visit_kanban" model="ir.ui.view">
             <field name="name">view.custom.crm.visit.kanban</field>
             <field name="model">custom_crm.visit</field>
@@ -58,17 +72,23 @@
                         <t t-name="kanban-box">
                             <div t-attf-class="oe_kanban_global_click">
                                 <div class="o_kanban_image">
+                                    <!-- Ojo: Pasar el nombre del molelo y el nombre del campo imagen -->
                                     <img alt="Avatar"
                                          t-att-src="kanban_image('custom_crm.visit', 'image', record.id.raw_value)"/>
                                 </div>
                                 <div class="oe_kanban_details">
+
+                                    <!-- Titulo de la carta -->
                                     <strong class="o_kanban_record_title">
                                         <field name="name"/>
                                         <field name="customer"/>
                                     </strong>
+
+                                    <!-- Para comprobar si hay algun valor-->
                                     <div t-if="record.date.value">
                                         <t t-esc="record.date.value"/>
                                     </div>
+
                                     <div t-if="record.type.value">
                                         <t t-esc="record.type.value"/>
                                     </div>
@@ -80,20 +100,26 @@
             </field>
         </record>
 
+        <!-- Personalizacion de las busquedas -->
         <record id="view_custom_crm_visit_search" model="ir.ui.view">
             <field name="name">view.custom.crm.visit.search</field>
             <field name="model">custom_crm.visit</field>
             <field name="arch" type="xml">
+
+                <!-- Diseño de la busqueda -->
                 <search string="Filtrar visitas">
                     <field name="name"/>
                     <field name="customer"/>
                     <field name="type"/>
                     <field name="date"/>
                     <group expand="0" string="Group By">
+                        <!-- Agrupar por -->
                         <filter name="groupby_type" string="Tipo" domain="[]" context="{'group_by':'type'}"
                                 help="Agrupar por tipo"/>
+
                         <filter name="groupby_date" string="Fecha" context="{'group_by':'date:year'}"
                                 help="Agrupar por fecha"/>
+
                     </group>
                     <filter name="filter_by_done" string="Realizada" domain="[('done','=','True')]"
                             help="Visitas realizadas"/>
@@ -101,21 +127,22 @@
             </field>
         </record>
 
+        <!-- Acciones -->
         <record id="action_custom_crm_visit_view" model="ir.actions.act_window">
-            <field name="name">Visita</field>
+            <field name="name">Visitas</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">custom_crm.visit</field>
             <field name="view_mode">tree,form,kanban</field>
+            <!-- help -->
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">
                     Visitas
                 </p>
                 <p>
-                    Click 'Nuevo' para añadir nuevos elementos
+                    Click para crear una nueva visita
                 </p>
             </field>
         </record>
-
 
         <record id="view_sale_order_form" model="ir.ui.view">
             <field name="name">view.sale.order.form</field>
@@ -128,11 +155,10 @@
             </field>
         </record>
 
-        <menuitem id="menu_custom_crm_root" name="Custom CRM" sequence="10"/>
 
-        <menuitem id="menu_custom_crm_visit_categ" name="Operaciones" parent="menu_custom_crm_root" sequence="0"/>
-
-        <menuitem id="menu_custom_crm_visit" name="Visitas" parent="menu_custom_crm_visit_categ" sequence="0"
+        <menuitem id="menu_custom_crm_root" name="Custon CRM" sequence="10"/>
+        <menuitem id="menu_custom_crm_visit_catag" name="Operaciones" parent="menu_custom_crm_root" sequence="10"/>
+        <menuitem id="menu_custom_crm_visit" name="Visitas" parent="menu_custom_crm_visit_catag" sequence="10"
                   action="action_custom_crm_visit_view"/>
 
     </data>
