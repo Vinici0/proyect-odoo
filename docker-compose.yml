@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  postgres-db:
+    image: postgres:15.1
+    environment:
+      POSTGRES_PASSWORD: 123456
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+    networks:
+      - postgres-net
+  pgAdmin:
+    image: dpage/pgadmin4:6.17
+    environment:
+      PGADMIN_DEFAULT_EMAIL:
+
+        PGADMIN_DEFAULT_PASSWORD: 123456
+    ports:
+        - 8080:80
+    networks:
+        - postgres-net
+volumes:
+    postgres-db:
+networks:
+    postgres-net:
+        driver: bridge
+ 
