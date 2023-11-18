@@ -75,21 +75,24 @@ Si logra establecer la conexión, todo está correcto, proceder a crear una base
 
 ## 11. Saltar de felicidad
 <img src="https://media.giphy.com/media/5GoVLqeAOo6PK/giphy.gif" alt="happy" />
-
-
-
-
-
+Creando un volumen
 ```
 docker volume create postgres-db
+```
 
+
+Creando una imagen y un volumen de postgres
+```
 docker container run \
 -d \
 --name postgres-db \
 -e POSTGRES_PASSWORD=123456 \
 -v postgres-db:/var/lib/postgresql/data \
 postgres:15.1
+```
 
+Creando una imagen y un volumen de pgAdmin
+```
 docker container run \
 --name pgAdmin \
 -e PGADMIN_DEFAULT_PASSWORD=123456 \
@@ -97,3 +100,17 @@ docker container run \
 -dp 8080:80 \
 dpage/pgadmin4:6.17
 ```
+
+Creando una red
+```docker network create postgres-net```
+
+Listando los contenedores existentes
+```docker container ls```
+
+Conectado contenedores a la misma red
+```
+docker network connect postgres-net 061
+docker network connect postgres-net 7d1
+```
+
+
