@@ -1,3 +1,7 @@
+
+solucion, ingresar como super su e ingresar el siguiente comando: apt install python3.8-venv
+
+
 /usr/bin/python3.8 /snap/pycharm-professional/359/plugins/python/helpers/virtualenv-20.24.5.pyz --system-site-packages /home/sistemas/Escritorio/odoo/odoo/custom_addons/films_crm/venv
 
 AttributeError: module 'virtualenv.create.via_global_ref.builtin.cpython.mac_os' has no attribute 'CPython2macOsFramework'
