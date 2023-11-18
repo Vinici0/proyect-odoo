@@ -19,6 +19,7 @@ Paso 4:
 No olvidar de dar los permisos a los directorios
 ```
 sudo chmod 777 odoo.conf
+chmod -R 777 ./ 
 ```
 
 /usr/bin/python3.8 /snap/pycharm-professional/359/plugins/python/helpers/virtualenv-20.24.5.pyz --system-site-packages /home/sistemas/Escritorio/odoo/odoo/custom_addons/films_crm/venv
