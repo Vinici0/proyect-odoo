@@ -1,4 +1,5 @@
 ## Report Definition (<report>):
+
 ```
 <report
     string="Informe visita"
