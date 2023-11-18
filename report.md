@@ -1,4 +1,5 @@
 ## Report Definition (<report>):
+```
 <report
     string="Informe visita"
     id="custom_crm_visit_report"
@@ -8,14 +9,12 @@
     file="custom_crm.report_visit_card"
     attachment_use="True"
 />
-
-
 ```
 id: Es un identificador único para este informe. En este caso, custom_crm_visit_report.
 model: Es el modelo de datos que se usará para generar el informe, en este caso, custom_crm.visit.
 name: Es el nombre del informe que se utilizará para buscar la plantilla QWeb asociada, en este caso, custom_crm.report_visit_card.
 file: Es el nombre del archivo del informe, en este caso, custom_crm.report_visit_card.
-```
+
 
 ## 2 Plantilla QWeb (<template>):
 
