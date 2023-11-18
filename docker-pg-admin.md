@@ -112,5 +112,9 @@ Conectado contenedores a la misma red
 docker network connect postgres-net 061
 docker network connect postgres-net 7d1
 ```
-
+Eliminar contenedores
+```
+docker container ls
+docker container rm -f 061 7d1
+```
 
