@@ -11,6 +11,7 @@ _logger = logging.getLogger(__name__)
 class SyncCategory(models.Model):
     _name = "master_pruebas.sync_category"
     _description = "Módelo para la sincronizacion de usuarios"
+    
 
     @api.model
     def sync_category(self):
@@ -81,11 +82,13 @@ class SyncCategory(models.Model):
                 if not exist:
                     print('Creando categoría')
                     # Convertir la representación de la jerarquía
-                    parent_path = SyncCategory.convert_parent_path(category_odoo11['parent_id'], category_odoo11['id'])
+                    parent_path = SyncCategory.convert_parent_path(category_odoo11['parent_id'])
+                    path_new = f"{parent_path}/{category_odoo11['id']}/" if parent_path else f"{category_odoo11['id']}/"
+
 
                     # Insertar solo el campo 'name' en Odoo 14
                     query = f"""INSERT INTO product_category (id, name, write_uid, create_uid, write_date, create_date, parent_path, complete_name)
-                                VALUES ({category_odoo11['id']}, '{category_odoo11['name']}', {category_odoo11['write_uid']}, {category_odoo11['create_uid']}, '{category_odoo11['write_date']}', '{category_odoo11['create_date']}', '{parent_path}', '{category_odoo11['complete_name']}')"""
+                                VALUES ({category_odoo11['id']}, '{category_odoo11['name']}', {category_odoo11['write_uid']}, {category_odoo11['create_uid']}, '{category_odoo11['write_date']}', '{category_odoo11['create_date']}', '{path_new}', '{category_odoo11['complete_name']}')"""
 
                     cursor14.execute(query)
 
