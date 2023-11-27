@@ -1,3 +1,10 @@
+import psycopg2
+import logging
+import time
+from odoo import fields, models, api, _
+from psycopg2.extras import RealDictCursor
+from odoo.tools import config
+import datetime
 
 class DatabaseConnector:
     def __init__(self, db_config):
