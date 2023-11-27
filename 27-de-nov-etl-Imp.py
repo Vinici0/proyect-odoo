@@ -400,6 +400,26 @@ class DatabaseComparator:
 
 
 
+ayudame  a solucionar el problemas de los de los '' que se dalla el script sql o otros caracteres especiales 
 
+
+import psycopg2 # Para conectarse a la base de datos
+import logging # Para imprimir mensajes en el log
+import time # Para medir el tiempo de ejecución
+from odoo import fields, models, api, _
+from psycopg2.extras import RealDictCursor # Para obtener los resultados de las consultas en formato diccionario
+from odoo.tools import config # Para obtener la configuración de la base de datos
+import datetime # Para obtener la fecha y hora actual
+_logger = logging.getLogger(__name__)
+
+
+sqlUpdate = ["ref = '1712394046001'", 'website_shor'''t_description = NULL', "street = 'VIA QUI'NINDE' A 20 METROS DE EPACEM MARGEN IZQUIERDO PORTON VERDE JUNTO A RESIDENCIA POZO'", "calendar_last_notif_ack = '2020-02-29 14:02:34'", 'date = NULL', 'signup_token = NULL', 'comment = NULL', 'zip = NULL', 'is_company = True', 'mobile = NULL', 'active = True', 'website_meta_description = NULL', 'id = 27268', 'message_bounce = 0', 'website_meta_keywords = NULL', "lang = 'es_EC'", 'parent_id = NULL', 'picking_warn_msg = NULL', "create_date = '2020-02-29 13:57:44.648155'", "type = 'contact'", "picking_warn = 'no-message'", 'website = NULL', 'company_name = NULL', 'invoice_warn_msg = NULL', 'employee = False', "display_name = 'SRA LESLIE POZO PEREZ'", "name = 'SRA LESLIE POZO PEREZ'", "vat = 'RESIDENCIA RICARDO POZO'", 'signup_expiration = NULL', 'city = NULL', 'last_time_entries_checked = NULL', "invoice_warn = 'no-message'", "phone = '3786127'", 'title = NULL', 'company_id = 1', 'commercial_partner_id = 27268', 'color = 0', 'tz = NULL', 'industry_id = NULL', 'street2 = NULL', "email = 'labomex.stodgo@gmail.com'", "credit_limit = '3000.0'", 'website_meta_title = NULL', 'country_id = NULL', "commercial_company_name = 'SRA LESLIE POZO PEREZ'", 'debit_limit = NULL', 'function = NULL', 'partner_share = True', 'website_description = NULL', 'signup_type = NULL', 'state_id = NULL']
+
+table_name = 'res_partner'
+sqlUpdate = f"""UPDATE {table_name} SET {', '.join(joinSqlScriptAndmatchingUpdate_fields_list)} WHERE id = {id};"""
+ 
+ 
+ dest_cursor.execute(
+                    sqlUpdate)
 
 
