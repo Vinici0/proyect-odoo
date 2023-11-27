@@ -6,6 +6,39 @@ from psycopg2.extras import RealDictCursor
 from odoo.tools import config
 import datetime
 
+
+class SyncCategory(models.Model):
+    _name = "master_pruebas.sync_category"
+    _description = "Módelo para la sincronizacion de usuarios"
+
+    @api.model
+    def sync_category(self):
+        conn11 = None
+        conn14 = None
+        # Se llama a la clase DatabaseComparator
+        dest_db_config = {
+            'host': 'localhost',
+            'dbname': 'gserp14_new',
+            'user': 'vborja',
+            'password': 'Vborja@2023'
+        }
+
+        # Configuración de la base de datos de destino
+        src_db_config = {
+            'host': 'localhost',
+            'dbname': 'gserp11',
+            'user': 'vborja',
+            'password': 'Vborja@2023'
+        }
+
+        src_db_connector = DatabaseConnector(src_db_config)
+        dest_db_connector = DatabaseConnector(dest_db_config)
+        db_comparator = DatabaseComparator(src_db_connector, dest_db_connector)
+        db_comparator.update_or_insert_records('product_product')
+
+
+
+#Clase del ETL
 class DatabaseConnector:
     def __init__(self, db_config):
         self.db_config = db_config
