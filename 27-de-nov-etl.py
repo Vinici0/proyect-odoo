@@ -8,6 +8,9 @@ import datetime
 
 
 class SyncCategory(models.Model):
+    """
+        Comenta: 
+    """
     _name = "master_pruebas.sync_category"
     _description = "Módelo para la sincronizacion de usuarios"
 
@@ -15,7 +18,7 @@ class SyncCategory(models.Model):
     def sync_category(self):
         conn11 = None
         conn14 = None
-        # Se llama a la clase DatabaseComparator
+        
         dest_db_config = {
             'host': 'localhost',
             'dbname': 'gserp14_new',
@@ -23,7 +26,6 @@ class SyncCategory(models.Model):
             'password': 'Vborja@2023'
         }
 
-        # Configuración de la base de datos de destino
         src_db_config = {
             'host': 'localhost',
             'dbname': 'gserp11',
@@ -36,8 +38,17 @@ class SyncCategory(models.Model):
         db_comparator = DatabaseComparator(src_db_connector, dest_db_connector)
         db_comparator.update_or_insert_records('product_product')
 
-# Clase Connectoin
 class DatabaseConnector:
+    """
+        Descripción:
+        Clase para conectar a una base de datos.
+        
+        Atributos:
+        db_config: Diccionario con la configuración de la base de datos.
+        
+        Métodos:
+        connect_to_database: Conecta a la base de datos.
+    """
     def __init__(self, db_config):
         self.db_config = db_config
 
@@ -52,8 +63,20 @@ class DatabaseConnector:
             return None
 
 
-#Clase del ETL
+
 class DatabaseComparator:
+    """
+        Descripción:
+        Clase para comparar tablas de dos bases de datos.
+        
+        Atributos:
+        src_db_connector: Instancia de la clase DatabaseConnector para la base de datos de origen.
+        dest_db_connector: Instancia de la clase DatabaseConnector para la base de datos de destino.
+        
+        Métodos:
+        compare_tables: Compara las tablas de dos bases de datos.
+        update_or_insert_records: Actualiza o inserta registros en la tabla de destino.
+    """
     def __init__(self, src_db_connector, dest_db_connector):
         self.src_db_connector = src_db_connector
         self.dest_db_connector = dest_db_connector
