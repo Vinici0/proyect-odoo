@@ -36,9 +36,7 @@ class SyncCategory(models.Model):
         db_comparator = DatabaseComparator(src_db_connector, dest_db_connector)
         db_comparator.update_or_insert_records('product_product')
 
-
-
-#Clase del ETL
+# Clase Connectoin
 class DatabaseConnector:
     def __init__(self, db_config):
         self.db_config = db_config
@@ -54,7 +52,7 @@ class DatabaseConnector:
             return None
 
 
-
+#Clase del ETL
 class DatabaseComparator:
     def __init__(self, src_db_connector, dest_db_connector):
         self.src_db_connector = src_db_connector
