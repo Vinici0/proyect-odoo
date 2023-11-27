@@ -1,10 +1,10 @@
-import psycopg2
-import logging
-import time
-from odoo import fields, models, api, _
-from psycopg2.extras import RealDictCursor
-from odoo.tools import config
-import datetime
+import psycopg2 # Para conectarse a la base de datos
+import logging # Para imprimir mensajes en el log
+import time # Para medir el tiempo de ejecución
+from odoo import fields, models, api, _ 
+from psycopg2.extras import RealDictCursor # Para obtener los resultados de las consultas en formato diccionario
+from odoo.tools import config # Para obtener la configuración de la base de datos
+import datetime # Para obtener la fecha y hora actual
 
 
 class SyncCategory(models.Model):
