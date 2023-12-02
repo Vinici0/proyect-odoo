@@ -4,20 +4,11 @@ import requests
 import re
 import json
 import logging
-import psycopg2
 
 _logger = logging.getLogger(__name__)
 
-
 class AccountInvoiceLineInherit(models.Model):
     _inherit = 'account.asset.asset'
-    api_url = 'http://localhost:8070/jsonrpc/'
-    des_db_config = {
-        'host': config['db_host'],
-        'dbname': config['db_name_14'],
-        'user': config['db_user'],
-        'password': config['db_password']
-    }
 
     from_group_asset_button = fields.Boolean(
         string='From_group_asset_button?',
@@ -54,50 +45,161 @@ class AccountInvoiceLineInherit(models.Model):
         return nuevo_registro
 
     def create_asset_odoo14(self, vals, id_recien_creado):
+        data_values = {
+            "code": vals['code'],
+            "company_id": vals['company_id'],
+            "create_uid": vals['currency_id'],
+            "company_currency_id": 2, #TODO: Moneda de la compañia
+            "method_number": vals['method_number'],
+            "method_progress_factor": vals['method_progress_factor'],
+            "method_time": vals['method_time'],
+            "method": vals['method'],
+            "name": vals['name'],
+            "prorata": vals['prorata'],
+            "profile_id": 1, #TODO: Perfil de activos fijo
+            "purchase_value": vals['value'],
+            "salvage_value": vals['salvage_value'],
+            "state": vals['state'],
+            "date_start": vals['date'],
+            "id_active": id_recien_creado
+        }
+
+        api_payload = {
+            "jsonrpc": "2.0",
+            "method": "call",
+            "params": {
+                "service": "object",
+                "method": "execute",
+                "args": [config['gserp_db_name'], config['id_user_api'], config['password_odoo14_api'],
+                         "account.asset", "create", data_values]
+            }
+        }
+
         try:
 
-            databas_connector = DatabaseConnector(self.des_db_config)
-            conn = databas_connector.connect_to_database()
-            cursor = conn.cursor()
+            response = requests.post(config['api_url'], data=json.dumps(api_payload),
+                                     headers={'Content-Type': 'application/json'})
 
-            query_insert = """
-                INSERT INTO account_asset (id, code, company_id, company_currency_id, method_number, method_progress_factor, method_time, method, name, prorata, profile_id, purchase_value, salvage_value, state, date_start)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
-            """
+            response.raise_for_status()
+            result = response.json()
+            _logger.info(f"Resultado de la llamada a la API: {result}")
 
-            cursor.execute(query_insert, (
-                id_recien_creado,
-                vals['code'],
-                vals['company_id'],
-                vals['currency_id'],
-                vals['method_number'],
-                vals['method_progress_factor'],
-                vals['method_time'],
-                vals['method'],
-                vals['name'],
-                vals['prorata'],
-                1,  # Perfil de activos fijo
-                vals['value'],
-                vals['salvage_value'],
-                vals['state'],
-                vals['date'],
-            ))
-            conn.commit()
-            cursor.close()
         except Exception as e:
             _logger.error(f"Error al crear el registro en la base de datos {config['db_name_14']}: {str(e)}")
 
 
-class DatabaseConnector:
-    def __init__(self, db_config):
-        self.db_config = db_config
+    def write(self, vals):
+        super(AccountInvoiceLineInherit, self).write(vals)
+        self.write_active_odoo14(vals)
 
-    def connect_to_database(self):
+    def write_active_odoo14(self, vals):
+        api_payload = {
+            "jsonrpc": "2.0",
+            "method": "call",
+            "params": {
+                "service": "object",
+                "method": "execute",
+                "args": [config['gserp_db_name'], config['id_user_api'], config['password_odoo14_api'], "account.asset", "search", [["id_active", "=", self.id]]]
+            }
+        }
+
         try:
-            conn_string = f"host={self.db_config['host']} dbname={self.db_config['dbname']} user={self.db_config['user']} password={self.db_config['password']}"
-            conn = psycopg2.connect(conn_string)
-            _logger.info(f"Connection to database {self.db_config['dbname']} successful")
-            return conn
-        except Exception as e:
-            _logger.error(f"Error while connecting to database {self.db_config['dbname']}: {str(e)}")
-            return None
+            response = requests.post(config['api_url'], data=json.dumps(api_payload),
+                                     headers={'Content-Type': 'application/json'})
+
+            response.raise_for_status()
+            result = response.json()
+            id_asset = result['result'][0]
+
+            data_values = {
+                "code": self.code,
+                "company_currency_id": 3,
+                "method_number": self.method_number,
+                "method_progress_factor": self.method_progress_factor,
+                "method_time": self.method_time,
+                "method": self.method,
+                "name": self.name,
+                "prorata": self.prorata,
+                "profile_id": 1, # TODO: Perfil de activos fijo
+                "purchase_value": self.value,
+                "salvage_value": self.salvage_value,
+                "state": self.state,
+                "date_start": self.date,
+                "id_active": self.id
+            }
+
+            api_payload = {
+                "jsonrpc": "2.0",
+                "method": "call",
+                "params": {
+                    "service": "object",
+                    "method": "execute",
+                    "args": [config['gserp_db_name'], config['id_user_api'], config['password_odoo14_api'], "account.asset", "write", [id_asset], data_values]
+                }
+            }
+            _logger.info(f"Resultado de la llamada a la API: {result}")
+
+            response = requests.post(config['api_url'], data=json.dumps(api_payload),
+                                        headers={'Content-Type': 'application/json'})
+
+            response.raise_for_status()
+            result = response.json()
+            _logger.info(f"Resultado de la llamada a la API: {result}")
+
+        except requests.exceptions.RequestException as e:
+            _logger.error(f"Error haciendo la llamada a la API: {e}")
+
+
+    def unlink(self):
+        super(AccountInvoiceLineInherit, self).unlink()
+        self.unlink_active_odoo14()
+
+    def unlink_active_odoo14(self):
+        api_payload = {
+            "jsonrpc": "2.0",
+            "method": "call",
+            "params": {
+                "service": "object",
+                "method": "execute",
+                "args": [config['gserp_db_name'], config['id_user_api'], config['password_odoo14_api'], "account.asset", "search", [["id_active", "=", self.id]]]
+            }
+        }
+
+        try:
+            response = requests.post(config['api_url'], data=json.dumps(api_payload),
+                                     headers={'Content-Type': 'application/json'})
+            response.raise_for_status()
+            result = response.json()
+            id_asset = result['result'][0]
+
+            api_payload = {
+                "jsonrpc": "2.0",
+                "method": "call",
+                "params": {
+                    "service": "object",
+                    "method": "execute",
+                    "args": [config['gserp_db_name'], config['id_user_api'], config['password_odoo14_api'], "account.asset", "unlink", [id_asset]]
+                }
+            }
+            _logger.info(f"Resultado de la llamada a la API: {result}")
+
+            response = requests.post(config['api_url'], data=json.dumps(api_payload),
+                                        headers={'Content-Type': 'application/json'})
+
+            response.raise_for_status()
+            result = response.json()
+            _logger.info(f"Resultado de la llamada a la API: {result}")
+
+        except requests.exceptions.RequestException as e:
+            _logger.error(f"Error haciendo la llamada a la API: {e}")
+
+
+
+
+
+
+
+
+
+
+
