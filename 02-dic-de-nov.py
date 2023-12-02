@@ -6,7 +6,6 @@ import json
 import logging
 
 _logger = logging.getLogger(__name__)
-
 class AccountInvoiceLineInherit(models.Model):
     _inherit = 'account.asset.asset'
 
