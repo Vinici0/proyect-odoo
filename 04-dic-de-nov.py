@@ -58,6 +58,8 @@ class SyncAssets(models.Model):
                                 self.check_code_repit(account11, cursor14, conn14, cont)
 
                             print('actualiza ', account11['id'])
+
+                            #TODO: Terminado
                             query = f"""UPDATE account_account SET code = '{account11['code']}', 
                                                                 deprecated = {account11['deprecated']}, 
                                                                 user_type_id = {account11['user_type_id']}, 
@@ -77,6 +79,7 @@ class SyncAssets(models.Model):
                                 cont += 1
                                 self.check_code_repit(account11, cursor14, conn14, cont)
 
+                            #TODO: Terminado
                             query = f"""UPDATE account_account SET name = '{account11['name']}', 
                                                                 code = '{account11['code']}', 
                                                                 deprecated = {account11['deprecated']}, 
@@ -99,7 +102,8 @@ class SyncAssets(models.Model):
                     if account11['code']:
                         cont += 1
                         self.check_code_repit(account11, cursor14, conn14, cont)
-
+                        
+                       #TODO: Terminado
                     query = f"""INSERT INTO account_account (id, 
                                                             name, 
                                                             code, 
@@ -279,6 +283,7 @@ class SyncAssets(models.Model):
         journal11['default_debit_account_id'] = 'null' if not journal11['default_debit_account_id'] else \
             journal11['default_debit_account_id']
 
+    #TODO: Terminado
     def account_asset(self, cursor14, cursor11,conn14, conn11):
         query11 = f"""SELECT * FROM account_asset_asset"""
         query14 = f"""SELECT * FROM account_asset"""
@@ -295,6 +300,7 @@ class SyncAssets(models.Model):
                     exist = True
                     if asset11['name'] != asset14['name']:
                         if asset11['category_id']:
+                            
                             self.check_account_category(cursor11, cursor14, asset11['category_id'], conn14)
 
                         print('actualiza ', asset11['id'])
@@ -400,6 +406,7 @@ class SyncAssets(models.Model):
         self.sync_depreciation_lines(cursor11, cursor14, conn14)
         conn14.commit()
 
+    #TODO: Terminado
     def sync_depreciation_lines(self, cursor11, cursor14, conn14):
         query11 = f"""SELECT * FROM account_asset_depreciation_line"""
         query14 = f"""SELECT * FROM account_asset_line"""
@@ -449,6 +456,7 @@ class SyncAssets(models.Model):
                 cursor14.execute(query)
                 conn14.commit()
 
+    #TODO: Terminado
     def check_account_category(self, cursor11, cursor14, cid, conn14):
         query11 = f"""SELECT * FROM account_asset_category WHERE id = {cid}"""
         query14 = f"""SELECT * FROM account_asset_profile WHERE id = {cid}"""
