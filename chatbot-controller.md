@@ -1,4 +1,4 @@
-Ubicar en el archivo controller_contabilidad.py
+## Ubicar en el archivo controller_contabilidad.py
 ```
  @http.route('/get-invoice/id/', type="json", auth='public', method=['GET'], cors="*", csrf=False)
     def _get_invoice_pdf_id(self, **kw):
