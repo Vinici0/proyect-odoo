@@ -9,7 +9,7 @@
     "args": [
       "gserp11",//name = 11
       2, //id = user
-      "admin",
+      "admin", //name user = 
       "botpress_comunication.agendar_cobro",
       "create",
   {
