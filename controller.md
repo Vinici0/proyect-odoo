@@ -7,9 +7,9 @@
     "service": "object",
     "method": "execute",
     "args": [
-      "gserp11",//name = 11
-      2, //id = user
-      "admin", //name user = 
+      "gserp11",//TODO: 
+      2, //TODO: 
+      "admin", //TODO: 
       "botpress_comunication.agendar_cobro",
       "create",
   {
