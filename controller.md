@@ -7,9 +7,11 @@
     "service": "object",
     "method": "execute",
     "args": [
-      "gserp11",//TODO: 
-      2, //TODO: 
-      "admin", //TODO: 
+      -------------------------------------------------
+      "gserp11",
+      2, 
+      "admin",
+      -------------------------------------------------
       "botpress_comunication.agendar_cobro",
       "create",
   {
