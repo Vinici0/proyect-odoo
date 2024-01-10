@@ -1,3 +1,26 @@
+## Save Database Odoo 11
+```
+    def _agendar_fecha_cobro_api(self, data):
+        try:
+            data = request.jsonrequest
+            vat = data['vat']
+            conn = psycopg2.connect(
+                host=config['gserp_db_host'],
+                database=config['gserp_db_name'],
+                user=config['gserp_db_user'],
+                password=config['gserp_db_password'])
+            cursor = conn.cursor(cursor_factory=RealDictCursor)
+            query = f"""insert into botpress_comunication_agendar_cobro (name, ref, phone, contrato, fecha, lugar) values ('{data['nombre']}','{data['cid']}','{data['phone']}','{data['contrato']}','{data['fecha']}','{data['lugar']}') returning id;"""
+            print(query)
+            cursor.execute(query)
+            conn.commit()
+            cursor.close()
+            conn.close()
+            return True
+        except Exception as e:
+            _logger.info("Error en la creacion de de fecha de cobro " + str(e))
+            return False
+```
 ## API Postman
 ```
 {
