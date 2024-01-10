@@ -1,6 +1,6 @@
 ## URL API
 ```
-    API_URL = f"""http://{config['gserp11_host']}:{config['gserp11_port']}/jsonrpc/""" if config[
+API_URL = f"""http://{config['gserp11_host']}:{config['gserp11_port']}/jsonrpc/""" if config[
                                                                                               'gserp11_host'] != '' else f"""https://{config['gserp11_host_url']}/jsonrpc/"""
 
 ```
