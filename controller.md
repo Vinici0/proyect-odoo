@@ -18,6 +18,32 @@ API_URL = f"""http://{config['gserp11_host']}:{config['gserp11_port']}/jsonrpc/"
 
 ## Api Agendar Cobro
 ```
+  @http.route('/agendar-fecha-cobro/', type="json", auth='none', method=['POST'], cors="*", csrf=False)
+    def _agendar_fecha_cobro(self, **kw):
+        try:
+            data = request.jsonrequest
+            print(data)
+            im_chat = None
+            if 'caso' in data:
+                im_chat = http.request.env['im_chat'].sudo().search([('caso', '=', data['caso'])], limit=1)
+            data_json = {
+                'name': data['nombre'],
+                'ref': data['cid'],
+                'phone': data['phone'],
+                'contrato': int(data['contrato']),
+                'fecha': data['fecha'],
+                'lugar': data['lugar'],
+                'caso': im_chat.id if im_chat else None
+            }
+            self._agendar_fecha_cobro_api(data_json)
+            http.request.env['botpress_comunication.agendar_cobro'].sudo().create(data_json)
+            return {'status': 200, 'status_response': "ok"}
+        except Exception as e:
+            _logger.info("Error en la creacion de de fecha de cobro " + str(e))
+            return {'status': 500, 'status_response': "error"}
+```
+
+```
  def _agendar_fecha_cobro_api(self, data_json):
         try:
             api_payload = {
