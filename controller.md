@@ -10,7 +10,7 @@
                 user=config['gserp_db_user'],
                 password=config['gserp_db_password'])
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            query = f"""insert into botpress_comunication_agendar_cobro (name, ref, phone, contrato, fecha, lugar) values ('{data['nombre']}','{data['cid']}','{data['phone']}','{data['contrato']}','{data['fecha']}','{data['lugar']}') returning id;"""
+            query = f"""insert into botpress_comunication_agendar_cobro (name, ref, phone, contrato, fecha, lugar) values ('{data['nombre']}','{data['cid']}','{data['phone']}','{data['contrato']}','{data['fecha']}','{data['lugar']}')"""
             print(query)
             cursor.execute(query)
             conn.commit()
