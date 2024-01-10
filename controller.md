@@ -1,3 +1,31 @@
+## API Postman
+```
+{
+  "jsonrpc": "2.0",
+  "method": "call",
+  "params": {
+    "service": "object",
+    "method": "execute",
+    "args": [
+      "gserp11",//name = 11
+      2, //id = user
+      "admin",
+      "botpress_comunication.agendar_cobro",
+      "create",
+  {
+    "nombre":"Vinicio Borja",
+    "cid":"1791728114001",
+    "phone":"0994958942",
+    "caso":"593994958942",
+    "contrato":"126005",
+    "fecha":"12-12-2024",
+    "lugar":"Santo Domingo"
+}
+    ]
+  }
+}
+```
+
 ## ODOO CONFIG
 ```
 password_odoo11_api = admin
@@ -72,31 +100,4 @@ API_URL = f"""http://{config['gserp11_host']}:{config['gserp11_port']}/jsonrpc/"
 
         except Exception as e:
             _logger.info("Error en la creacion de de fecha de cobro " + str(e))
-```
-## API Postman
-```
-{
-  "jsonrpc": "2.0",
-  "method": "call",
-  "params": {
-    "service": "object",
-    "method": "execute",
-    "args": [
-      "gserp11",//name = 11
-      2, //id = user
-      "admin",
-      "botpress_comunication.agendar_cobro",
-      "create",
-  {
-    "nombre":"Vinicio Borja",
-    "cid":"1791728114001",
-    "phone":"0994958942",
-    "caso":"593994958942",
-    "contrato":"126005",
-    "fecha":"12-12-2024",
-    "lugar":"Santo Domingo"
-}
-    ]
-  }
-}
 ```
