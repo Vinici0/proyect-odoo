@@ -1,3 +1,14 @@
+## ODOO CONFIG
+```
+password_odoo11_api = admin
+id_user_api = 1
+; gserp14_host = ''
+gserp11_host_url = gruposcanner.com
+user_odoo11_api = admin
+gserp11_host = 192.168.15.245
+gserp11_port = 8070
+```
+
 ## URL API
 ```
 API_URL = f"""http://{config['gserp11_host']}:{config['gserp11_port']}/jsonrpc/""" if config[
