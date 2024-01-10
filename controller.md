@@ -1,5 +1,12 @@
-## Api Agendar Cobro
+## URL API
+```
+class BotpressComunication(http.Controller):
+    API_URL = f"""http://{config['gserp11_host']}:{config['gserp11_port']}/jsonrpc/""" if config[
+                                                                                              'gserp11_host'] != '' else f"""https://{config['gserp11_host_url']}/jsonrpc/"""
 
+```
+
+## Api Agendar Cobro
 ```
  def _agendar_fecha_cobro_api(self, data_json):
         try:
